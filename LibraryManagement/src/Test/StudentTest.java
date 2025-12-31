@@ -1,0 +1,101 @@
+package Test;
+
+import java.util.List;
+import java.util.Scanner;
+
+import Impl.StudentDaoImpl;
+import POJO.Student;
+
+public class StudentTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		 String name;
+		 int issuedBookId;
+		 StudentDaoImpl sdimpl=new StudentDaoImpl();
+		 Scanner sc=new Scanner(System.in);
+		 System.out.println(" 1.Add Student\n 2.Update Student\n 3.Delete Student\n 4.Get all Student\n 5.Search Student by id\n");
+		 int choice=sc.nextInt();
+		 switch(choice) {
+		 case 1:{
+			 System.out.println("Enter Student name");
+			 name=sc.next();
+			 System.out.println("Enter Book id");
+			 issuedBookId=sc.nextInt();
+			 Student s=new Student(name,issuedBookId);
+			 boolean flag=sdimpl.addStudent(s);
+			 if(flag) {
+				 System.out.println("Successfully Added");
+			 }
+			 else {
+				 System.out.println("Fail to add");
+			 }
+			 
+		 }
+		 break;
+		 case 2:{
+			 System.out.println("Enter Student id to update");
+			int studentId=sc.nextInt();
+			System.out.println("Enter student name");
+			name=sc.next();
+			System.out.println("Enter the Book id");
+			 issuedBookId=sc.nextInt();
+			 Student s=new Student();
+			 s.setName(name);
+			 s.setIssuedBookId(issuedBookId);
+			 s.setStudentId(studentId);
+			 boolean flag=sdimpl.updateStudent(s);
+			 if(flag) {
+				 System.out.println("Successfully Updated");
+			 }
+			 else {
+				 System.out.println("Fail to Update");
+			 }
+			 
+
+		 }
+		 break;
+		 case 3:{
+			 System.out.println("Enter student id to delete");
+			 int studentId=sc.nextInt();
+			 boolean flag=sdimpl.deleteStudent(studentId);
+			 if(flag) {
+				 System.out.println("Successfully deleted");
+			 }
+			 else {
+				 System.out.println("Fail to delete");
+			 }
+			 
+	 
+		 }
+		 break;
+		 case 4:{
+			 List <Student> list=sdimpl.getallstudent();
+			 if(list!=null) {
+				 for(Student s:list) {
+					 System.out.println(s);
+				 }
+			 }
+			 
+	 
+		 }
+		 break;
+		 case 5:{
+	 System.out.println("Enter Student id");
+	 int studentId=sc.nextInt();
+	 List <Student> list=sdimpl.searchbyid(studentId);
+	 if(list!=null) {
+		 for(Student s:list) {
+			 System.out.println(s);
+		 }
+	 }
+	 
+		 }
+		 break;
+		 }
+		 
+
+	}
+
+}

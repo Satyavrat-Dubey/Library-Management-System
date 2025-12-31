@@ -1,0 +1,28 @@
+package Test;
+
+import java.util.Scanner;
+
+import Impl.LoginDaoImpl;
+
+public class LoginTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		LoginDaoImpl ldimpl=new LoginDaoImpl();
+		Scanner sc=new Scanner (System.in);   
+		System.out.println("Enter your Email");
+		String emailId=sc.next();
+		System.out.println("Enter your password");
+		String passsword=sc.next();
+		boolean flag=ldimpl.adminLogin(emailId, passsword);
+		if(flag) {
+			System.out.println("Successfully Logged in");
+		}
+		else {
+			System.out.println("Login failed");
+		}
+		
+
+	}
+
+}

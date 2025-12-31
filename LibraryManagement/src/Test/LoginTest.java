@@ -1,0 +1,275 @@
+package Test;
+
+import java.util.List;
+import java.util.Scanner;
+
+import Impl.LibraryDaoImpl;
+import Impl.LoginDaoImpl;
+import Impl.StudentDaoImpl;
+import POJO.Book;
+import POJO.Student;
+
+public class LoginTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		LoginDaoImpl ldimpl=new LoginDaoImpl();
+		Scanner sc=new Scanner (System.in);   
+		System.out.println("Enter your Email");
+		String emailId=sc.next();
+		System.out.println("Enter your password");
+		String passsword=sc.next();
+		int choice;
+		boolean flag,exit=false;
+		flag=ldimpl.adminLogin(emailId, passsword);
+		if(flag) {
+			do {
+			System.out.println("1->Book Operation\n2->Student Operation");
+			System.out.println("Enter your choice");
+			 choice=sc.nextInt();
+			switch(choice) {
+			case 1:{
+				 int bookId;
+				 String title;
+				 String author;
+				 int availableCopies;
+				
+				LibraryDaoImpl bimpl=new LibraryDaoImpl();
+				
+				System.out.println(" 1.AddBook\n 2.UpdateBook\n 3.SearchBook\n 4.Total Books list\n 5.IssueBook\n 6.ReturnBook\n 7.Search Book by name");
+				System.out.println("Enter your choice");
+				 choice=sc.nextInt();
+				switch (choice) {
+					case 1:
+					{
+//						 System.out.println("Enter Book Id:");
+//						     bookId = sc.nextInt();
+//						    sc.nextLine();   
+
+						    System.out.println("Enter Book Title:");
+						     title = sc.nextLine();
+						     sc.nextLine();
+
+						    System.out.println("Enter Author Name:");
+						     author = sc.nextLine();
+//						     sc.nextLine();
+
+						    System.out.println("Enter Available Copies:");
+						     availableCopies = sc.nextInt();
+
+						   Book b=new Book(title,author,availableCopies);
+						    flag = bimpl.addbook(b);
+				            if (flag) {
+				               System.out.println("Successfully Inserted");
+
+
+				            }
+				            
+				}
+					break;
+					case 2:
+					{
+						System.out.println("Enter the id which you have to Update");
+						bookId=sc.nextInt();
+					    sc.nextLine();   
+
+					    System.out.println("Enter Book Title:");
+					     title = sc.nextLine();
+
+					    System.out.println("Enter Author Name:");
+					     author = sc.nextLine();
+
+					    System.out.println("Enter Available Copies:");
+					     availableCopies = sc.nextInt();
+
+					   Book b=new Book(bookId,title,author,availableCopies);
+					    flag = bimpl.updatebook(b);
+			            if (flag) {
+			               System.out.println("Successfully Updated");
+			            } else {
+			               System.out.println("Fail to Updated");
+			            }
+						
+					}
+					break;
+					case 3:
+					{
+						System.out.println("Enter the id which you want to view");
+						bookId=sc.nextInt();
+						sc.nextLine();
+					    Book b = bimpl.searchbook(bookId);
+					    if (b != null) {
+					        System.out.println(b);
+					    } else {
+					        System.out.println("Book not found");
+					    }
+					}
+					break;
+					case 4:
+					{
+						List<Book> list = bimpl.getallBook();
+
+			            if (list.isEmpty()) {
+			                System.out.println("No books available in library");
+			            } else {
+			                System.out.println("----- Book List -----");
+			                for (Book b : list) {
+			                    System.out.println(b);
+			                }
+			            }
+			        }
+			        break;
+					
+			case 5:   // Issue Book
+			{
+			    System.out.println("Enter Student ID:");
+			    int sid = sc.nextInt();
+
+			    System.out.println("Enter Book ID:");
+			    int bid = sc.nextInt();
+
+			    boolean issued = bimpl.issuebook(bid, sid);
+
+			    if (issued) {
+			        System.out.println("Book Issued Successfully");
+			    } else {
+			        System.out.println("Book Issue Failed");
+			    }
+			}
+			break;
+			case 6:   // Return Book
+			{
+			    System.out.println("Enter Student ID:");
+			    int sid = sc.nextInt();
+
+			    System.out.println("Enter Book ID:");
+			    int bid = sc.nextInt();
+
+			    boolean returned = bimpl.returnbook(bid, sid);
+
+			    if (returned) {
+			        System.out.println("Book Returned Successfully");
+			    } else {
+			        System.out.println("Return Failed");
+			    }
+			}
+			break;
+			case 7:
+			{
+				sc.nextLine(); // buffer clear
+			    System.out.println("Enter Book Name:");
+			    String name = sc.nextLine();
+
+			    List<Book> list = bimpl.searchBookByname(name);
+
+			    if (list.isEmpty()) {
+			        System.out.println("No books found");
+			    } else {
+			        for (Book b : list) {
+			            System.out.println(b);
+			        }
+			    }
+			}
+			break;
+			}//inner switch closing
+			
+			}
+			break;
+			case 2:{
+
+				 String name;
+				 int issuedBookId;
+				 StudentDaoImpl sdimpl=new StudentDaoImpl();
+				
+				 System.out.println(" 1.Add Student\n 2.Update Student\n 3.Delete Student\n 4.Get all Student\n 5.Search Student by id\n");
+				  choice=sc.nextInt();
+				 switch(choice) {
+				 case 1:{
+					 System.out.println("Enter Student name");
+					 name=sc.next();
+					 System.out.println("Enter Book id");
+					 issuedBookId=sc.nextInt();
+					 Student s=new Student(name,issuedBookId);
+					  flag=sdimpl.addStudent(s);
+					 if(flag) {
+						 System.out.println("Successfully Added");
+					 }
+					 else {
+						 System.out.println("Fail to add");
+					 }
+					 
+				 }
+				 break;
+				 case 2:{
+					 System.out.println("Enter Student id to update");
+					int studentId=sc.nextInt();
+					System.out.println("Enter student name");
+					name=sc.next();
+					System.out.println("Enter the Book id");
+					 issuedBookId=sc.nextInt();
+					 Student s=new Student();
+					 s.setName(name);
+					 s.setIssuedBookId(issuedBookId);
+					 s.setStudentId(studentId);
+					  flag=sdimpl.updateStudent(s);
+					 if(flag) {
+						 System.out.println("Successfully Updated");
+					 }
+					 else {
+						 System.out.println("Fail to Update");
+					 }
+					 
+
+				 }
+				 break;
+				 case 3:{
+					 System.out.println("Enter student id to delete");
+					 int studentId=sc.nextInt();
+					  flag=sdimpl.deleteStudent(studentId);
+					 if(flag) {
+						 System.out.println("Successfully deleted");
+					 }
+					 else {
+						 System.out.println("Fail to delete");
+					 }
+					 
+			 
+				 }
+				 break;
+				 case 4:{
+					 List <Student> list=sdimpl.getallstudent();
+					 if(list!=null) {
+						 for(Student s:list) {
+							 System.out.println(s);
+						 }
+					 }
+					 
+			 
+				 }
+				 break;
+				 case 5:{
+			 System.out.println("Enter Student id");
+			 int studentId=sc.nextInt();
+			 List <Student> list=sdimpl.searchbyid(studentId);
+			 if(list!=null) {
+				 for(Student s:list) {
+					 System.out.println(s);
+				 }
+			 }
+			 
+				 }
+				 break;
+				 }
+			}
+			break;
+			}//outer switch closing
+			}while(exit==false);
+		}//if closing
+		else {
+			System.out.println("Login failed");
+		}
+		
+
+	}
+
+}
